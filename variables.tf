@@ -63,49 +63,51 @@ variable "init_container" {
 }
 
 variable "containers" {
-  type = list(object({
-    name                         = string
-    image                        = string
-    cpu                          = string
-    memory                       = string
-    cpu_limit                    = optional(string)
-    memory_limit                 = optional(string)
-    environment_variables        = optional(map(string))
-    secure_environment_variables = optional(map(string))
-    commands                     = optional(list(string))
-    ports = optional(list(object({
-      port     = number
-      protocol = optional(string, "TCP")
-    })))
-    readiness_probe = object({
-      exec                  = optional(string)
-      initial_delay_seconds = optional(number)
-      period_seconds        = optional(number, 10)
-      failure_threshold     = optional(number, 3)
-      success_threshold     = optional(number, 1)
-      timeout_seconds       = optional(number, 10)
-      http_get = optional(object({
-        path         = string
-        port         = number
-        scheme       = optional(string, "Https")
-        http_headers = optional(map(string))
+  type = list(object(
+    {
+      name                         = string
+      image                        = string
+      cpu                          = string
+      memory                       = string
+      cpu_limit                    = optional(string)
+      memory_limit                 = optional(string)
+      environment_variables        = optional(map(string))
+      secure_environment_variables = optional(map(string))
+      commands                     = optional(list(string))
+      ports = optional(list(object({
+        port     = number
+        protocol = optional(string, "TCP")
+      })))
+      readiness_probe = optional(object({
+        exec                  = optional(list(string))
+        initial_delay_seconds = optional(number)
+        period_seconds        = optional(number, 10)
+        failure_threshold     = optional(number, 3)
+        success_threshold     = optional(number, 1)
+        timeout_seconds       = optional(number, 10)
+        http_get = optional(object({
+          path         = string
+          port         = number
+          scheme       = optional(string, "Https")
+          http_headers = optional(map(string))
+        }))
       }))
-    })
-    liveness_probe = object({
-      exec                  = optional(string)
-      initial_delay_seconds = optional(number)
-      period_seconds        = optional(number, 10)
-      failure_threshold     = optional(number, 3)
-      success_threshold     = optional(number, 1)
-      timeout_seconds       = optional(number, 10)
-      http_get = optional(object({
-        path         = string
-        port         = number
-        scheme       = optional(string, "Https")
-        http_headers = optional(map(string))
+      liveness_probe = optional(object({
+        exec                  = optional(list(string))
+        initial_delay_seconds = optional(number)
+        period_seconds        = optional(number, 10)
+        failure_threshold     = optional(number, 3)
+        success_threshold     = optional(number, 1)
+        timeout_seconds       = optional(number, 10)
+        http_get = optional(object({
+          path         = string
+          port         = number
+          scheme       = optional(string, "Https")
+          http_headers = optional(map(string))
+        }))
       }))
-    })
-  }))
+    }
+  ))
   sensitive   = true
   description = "Container definitions"
 }
