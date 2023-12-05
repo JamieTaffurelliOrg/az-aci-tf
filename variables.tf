@@ -53,7 +53,6 @@ variable "init_container" {
   type = object({
     name                         = string
     image                        = string
-    environment_variables        = optional(map(string))
     secure_environment_variables = optional(map(string))
     commands                     = optional(list(string))
   })
@@ -71,7 +70,6 @@ variable "containers" {
       memory                       = string
       cpu_limit                    = optional(string)
       memory_limit                 = optional(string)
-      environment_variables        = optional(map(string))
       secure_environment_variables = optional(map(string))
       commands                     = optional(list(string))
       ports = optional(list(object({
