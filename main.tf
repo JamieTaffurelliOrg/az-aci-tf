@@ -15,12 +15,11 @@ resource "azurerm_container_group" "aci" {
   }
 
   dynamic "init_container" {
-    for_each = var.init_container == null ? {} : { "init_container" = var.init_container }
+    for_each = var.init_container == null ? {} : nonsensitive({ "init_container" = var.init_container })
 
     content {
       name                         = init_container.value["name"]
       image                        = init_container.value["image"]
-      environment_variables        = init_container.value["environment_variables"]
       secure_environment_variables = init_container.value["secure_environment_variables"]
       commands                     = init_container.value["commands"]
     }
@@ -36,7 +35,6 @@ resource "azurerm_container_group" "aci" {
       memory                       = container.value["memory"]
       cpu_limit                    = container.value["cpu_limit"]
       memory_limit                 = container.value["memory_limit"]
-      environment_variables        = container.value["environment_variables"]
       secure_environment_variables = container.value["secure_environment_variables"]
       commands                     = container.value["commands"]
 
